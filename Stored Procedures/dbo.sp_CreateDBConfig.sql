@@ -3,18 +3,22 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 /*
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 │           Name: sp_CreateDBConfig
 │ 
-│          Description: Generates Statements to create a database with the stored configurations
+│          Description: enters custom database configurations in DatabaseConfig
 │
 │          Parameters:
-│				@DatabaseName
-|				@ServerName - Default BFS-SQLDBA01
+│				@DBGUID UNIQUEIDENTIFER
+|				@Setting varchar(128)
+|				@SetVal varchar(128)
 │
 │          Author:	Jennifer Burris 
-│          Date:	3/17/2025
+│          Date:	3/31/2025
+|
+|  EXEC SP_CreateDBConfig @DBName = 'DBaaS_Test'
 ╞═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════	
 │          Change History:
 ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -22,34 +26,16 @@ GO
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 */
 
-CREATE   PROCEDURE [dbo].[sp_CreateDBConfig]
-	@DBName VARCHAR(120), @ServerName VARCHAR(128) = 'BFS-SQLDBA01'
+CREATE    PROCEDURE [dbo].[sp_CreateDBConfig]
+	@DBGuid UNIQUEIDENTIFIER, @Setting varchar(128), @SetVal varchar(128) 
 AS
 BEGIN
 
 	SET NOCOUNT ON;
-	IF @DBName IS NULL
-	BEGIN
-	 RAISERROR('A Database Name cannot be NULL', 16, 1)
-	 RETURN;
-	END
 
-	DECLARE @DBGUID UNIQUEIDENTIFIER
-	
-	SELECT Database_GUID
-	FROM Databases 
-	WHERE DatabaseName = @DBName
-	AND ServerName = @ServerName
-	
-	IF @@ROWCOUNT != 0
-		BEGIN
-			INSERT INTO Databases(DatabaseName, ServerName)
-			VALUES (@DBName, @ServerName)
-		END
+	INSERT INTO DatabaseConfig (Database_GUID, Setting, SetVal)
+	VALUES
+	(@DBGuid, @Setting, @SetVal)
 
-	SELECT @DBGUID = Database_GUID
-	FROM Databases 
-	WHERE DatabaseName = @DBName
-	AND ServerName = @ServerName
 END
 GO
