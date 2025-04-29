@@ -8,5 +8,5 @@ CREATE TABLE [dbo].[DatabaseConfig]
 [UpdateUser] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF__DatabaseC__Updat__3B75D760] DEFAULT (suser_sname())
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[DatabaseConfig] ADD CONSTRAINT [FK_DatabaseConfig_Databases] FOREIGN KEY ([Database_GUID]) REFERENCES [dbo].[Databases] ([Database_GUID])
+ALTER TABLE [dbo].[DatabaseConfig] ADD CONSTRAINT [FK_DatabaseConfig_Databases] FOREIGN KEY ([Database_GUID]) REFERENCES [dbo].[DBaaS_Database] ([Database_GUID])
 GO

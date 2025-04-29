@@ -3,7 +3,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE   PROCEDURE [dbo].[sp_GetDatabaseSpecs] 
+CREATE PROCEDURE [dbo].[sp_GetDatabaseSpecs] 
 
 @DBName VArchar(128)
 
@@ -19,7 +19,7 @@ select
 from DefaultConfig def
 left join DatabaseConfig dbc
 on dbc.setting=def.setting 
-left join [DATABASES] db
+left join DBaaS_Database db
 on dbc.Database_GUID=db.Database_GUID
 and objectType='database'
 and db.DatabaseName=@DBName

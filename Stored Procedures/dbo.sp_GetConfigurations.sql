@@ -35,11 +35,11 @@ BEGIN
 	AND Automation = 1
 	UNION
 	SELECT 'ObjectName', DatabaseName
-	FROM Databases
+	FROM DBaaS_Database
 	WHERE Database_GUID = @GUID
 	UNION
 	SELECT 'ServerName', ServerName
-	FROM Databases
+	FROM DBaaS_Database
 	WHERE Database_GUID = @GUID
 	
 END

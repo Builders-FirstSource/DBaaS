@@ -26,7 +26,7 @@ GO
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 */
 
-CREATE   PROCEDURE [dbo].[sp_Create_Get_DBGUID]
+CREATE PROCEDURE [dbo].[sp_Create_Get_DBGUID]
 	@DBName VARCHAR(120), @ServerName VARCHAR(128) = 'BFS-SQLDBA01'
 AS
 BEGIN
@@ -42,16 +42,16 @@ BEGIN
 
 	IF NOT EXISTS (
 					SELECT Database_GUID
-					FROM Databases 
+					FROM DBaaS_Database 
 					WHERE DatabaseName = @DBName
 					AND ServerName = @ServerName)
 		BEGIN
-			INSERT INTO Databases(DatabaseName, ServerName)
+			INSERT INTO DBaaS_Database(DatabaseName, ServerName)
 			VALUES (@DBName, @ServerName)
 		END
 
 	SELECT @DBGUID = Database_GUID
-	FROM Databases 
+	FROM DBaaS_Database 
 	WHERE DatabaseName = @DBName
 	AND ServerName = @ServerName
 
